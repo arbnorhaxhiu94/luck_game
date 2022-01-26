@@ -8,6 +8,8 @@ import Stage1 from "../screens/DiceGame/Stage1/Stage1";
 import Stage3 from "../screens/DiceGame/Stage3/Stage3";
 import Stage4 from "../screens/DiceGame/Stage4/Stage4";
 import Stage5 from "../screens/DiceGame/Stage5/Stage5";
+import Stage6 from "../screens/DiceGame/Stage6/Stage6";
+import Stage7 from "../screens/DiceGame/Stage7/Stage7";
 
 export type RootStackParamsList = {
     HomeScreen: undefined,
@@ -28,6 +30,12 @@ export type RootStackParamsList = {
     },
     Stage5: {
         Player: 'Single Player' | 'Two Players' | undefined
+    },
+    Stage6: {
+        Player: 'Single Player' | 'Two Players' | undefined
+    },
+    Stage7: {
+        Player: 'Single Player' | 'Two Players' | undefined
     }
 }
 
@@ -47,6 +55,8 @@ export const RootNavigator = () => {
                 <RootStack.Screen name={'Stage3'} component={Stage3} />
                 <RootStack.Screen name={'Stage4'} component={Stage4} />
                 <RootStack.Screen name={'Stage5'} component={Stage5} />
+                <RootStack.Screen name={'Stage6'} component={Stage6} />
+                <RootStack.Screen name={'Stage7'} component={Stage7} />
             </RootStack.Navigator>
         </NavigationContainer>
     )

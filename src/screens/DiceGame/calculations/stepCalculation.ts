@@ -1,6 +1,11 @@
 import { initialValuesType } from "./initialValues/type";
 
-export const calculateUser1Step = (boxes: initialValuesType[]): { tempBoxes: initialValuesType[], diceNumber: number} => {
+export const calculateUser1Step = (
+    boxes: initialValuesType[]
+): { 
+    tempBoxes: initialValuesType[], 
+    diceNumber: number
+} => {
     let diceNumber = Math.floor(Math.random() * 6) + 1;
     let tempBoxes = boxes;
     let currentPosition: number = 0;
@@ -22,7 +27,12 @@ export const calculateUser1Step = (boxes: initialValuesType[]): { tempBoxes: ini
     return {tempBoxes, diceNumber};
 }
 
-export const calculateUser2Step = (boxes: initialValuesType[]): { tempBoxes: initialValuesType[], diceNumber: number} => {
+export const calculateUser2Step = (
+    boxes: initialValuesType[]
+): { 
+    tempBoxes: initialValuesType[], 
+    diceNumber: number
+} => {
     let diceNumber = Math.floor(Math.random() * 6) + 1;
     let tempBoxes = boxes;
     let currentPosition = 0;
@@ -42,7 +52,7 @@ export const calculateUser2Step = (boxes: initialValuesType[]): { tempBoxes: ini
             tempBoxes[currentPosition - diceNumber].value = 2;
         }
     }
-    
+
     tempBoxes[currentPosition].value = 0;
 
     return {tempBoxes, diceNumber};

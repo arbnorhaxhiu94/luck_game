@@ -226,7 +226,7 @@ const Stage5 = () => {
                 {route.params?.Player == 'Single Player' ? null
                 :
                 <RollButton 
-                    disabled={turn == 'Player2'}
+                    disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
                     onPress={rollPlayer1Dice} />}
                 <Dice 
@@ -278,7 +278,7 @@ const Stage5 = () => {
                     diceIsRotating={dice2IsRotating}
                     diceNumber={player2DiceNumber} />
                 <RollButton 
-                    disabled={turn == 'Player1'}
+                    disabled={turn == 'Player1' || dice2IsRotating}
                     backgroundColor={turn == 'Player2' ? Colors.BLUE : Colors.GRAY_A}
                     onPress={rollPlayer2Dice} />
             </View>
@@ -297,7 +297,7 @@ const Stage5 = () => {
                         }
                     } else if(action == 'Play') {
                         if (route.params?.Player == 'Single Player') {
-                            navigation.replace('Stage3', {Player: 'Single Player'});
+                            navigation.replace('Stage6', {Player: 'Single Player'});
                         }
                     } else if (action == 'Restart'){
                         navigation.replace('Stage1', {Player: 'Single Player'});

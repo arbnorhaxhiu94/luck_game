@@ -227,7 +227,7 @@ const Stage2 = () => {
                 {route.params?.Player == 'Single Player' ? null
                 :
                 <RollButton 
-                    disabled={turn == 'Player2'}
+                disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
                     onPress={rollPlayer1Dice} />}
                 <Dice 
@@ -280,7 +280,7 @@ const Stage2 = () => {
                     diceIsRotating={dice2IsRotating}
                     diceNumber={player2DiceNumber} />
                 <RollButton 
-                    disabled={turn == 'Player1'}
+                    disabled={turn == 'Player1' || dice2IsRotating}
                     backgroundColor={turn == 'Player2' ? Colors.DARK_BLUE : Colors.GRAY_A}
                     onPress={rollPlayer2Dice} />
             </View>

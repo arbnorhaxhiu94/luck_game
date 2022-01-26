@@ -17,5 +17,11 @@ export const styles = StyleSheet.create({
     },
     buttonsContainer: {
         flexDirection: 'row'
+    },
+    trophy: {
+        width: 40,
+        height: 40,
+        marginBottom: 20,
+        alignSelf: 'center'
     }
 })

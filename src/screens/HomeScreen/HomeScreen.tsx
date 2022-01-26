@@ -26,7 +26,7 @@ const HomeScreen = () => {
                     fontWeight={'bold'} />
                 <View style={{height: 20}} />
                 <Text 
-                    text={'Test your luck by playing a game \nthat is based on luck only'}
+                    text={'You think you are lucky?\nTry to do the impossible by winning 7 times in a row!'}
                     color={Colors.WHITE}
                     textAlign={'center'} />
             </View>
@@ -42,12 +42,20 @@ const HomeScreen = () => {
                     onPress={() => navigation.navigate('SelectStageScreen', {
                         Player: 'Two Players'
                     })} />
+                <View style={{height: 60}} />
+                <Button 
+                    text={'Leadersboard'}
+                    onPress={() => navigation.navigate('SelectStageScreen', {
+                        Player: 'Two Players'
+                    })}
+                    backgroundColor={Colors.ORANGE} />
             </View>
-            <View style={[styles.container, {paddingBottom: 40}]}>
+            <View style={[styles.container, {paddingBottom: 40, flex: 1}]}>
                 <Text 
                     text={'Created by ARHAX'}
                     color={Colors.WHITE}
-                    textAlign={'center'} />
+                    textAlign={'center'}
+                    fontSize={12} />
             </View>
         </LinearGradient>
     );

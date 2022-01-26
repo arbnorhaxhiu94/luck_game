@@ -33,6 +33,18 @@ const SelectStageScreen = () => {
                 titleTextColor={Colors.WHITE}
                 goBack={() => navigation.goBack()} />
             <View style={styles.container}>
+                {route.params?.Player == 'Two Players' ?
+                <Text 
+                    text={'Play with a friend'}
+                    color={Colors.WHITE}
+                    fontWeight={'bold'}
+                    fontSize={16} />
+                :
+                <Text 
+                    text={'Play to get on the Leadersboard '}
+                    color={Colors.WHITE}
+                    fontWeight={'bold'}
+                    fontSize={16} />}
                 <View style={styles.carouselContainer}>
                     <Animated.FlatList 
                         style={styles.stagesList}
@@ -108,10 +120,16 @@ const SelectStageScreen = () => {
                             )
                         }} />
                 </View>
-                {route.params?.Player == 'Two Players' &&
+                {route.params?.Player == 'Two Players' ?
                 <View>
                     <Text 
                         text={'Slide to select prefered Stage'}
+                        color={Colors.WHITE} />
+                </View>
+                : route.params?.Player == 'Single Player' &&
+                <View>
+                    <Text 
+                        text={'Test your luck by winning 7 times in a row'}
                         color={Colors.WHITE} />
                 </View>}
             </View>

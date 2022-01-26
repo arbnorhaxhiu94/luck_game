@@ -1,26 +1,25 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, BackHandler, Easing, Image, ImageBackground, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Animated, BackHandler, Easing, Image, ImageBackground, StatusBar, Text, View } from "react-native";
 import { Colors } from "../../../assets/colors/colors";
 import { SCREEN } from "../../../config/Constants";
-import { Stage1NavigationProps } from "../../../navigation/NavigationTypes";
-import { RootStackParamsList } from "../../../navigation/RootNavigator";
-import { Stages } from "../../SelectStageScreen/config/StagesData";
-import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
-import { StageOneInitialValues } from "../calculations/initialValues/StageOneInitialValues";
 import { initialValuesType } from "../calculations/initialValues/type";
-import { calculateUser1Step, calculateUser2Step } from "../calculations/stepCalculation";
 import { Box } from "../components/Box/Box";
 import { Dice } from "../components/Dice/Dice";
-import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup";
 import { RollButton } from "../components/RollButton/RollButton";
 import { SoldiersContainer } from "../components/SoldiersContainer/SoldiersContainer";
+import { boxLeftPosition, boxTopPosition } from "./config/setBoxesPosition";
+import { calculateUser1Step, calculateUser2Step } from "../calculations/stepCalculation";
 import { styles } from "./styles";
+import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup";
+import { RootStackParamsList } from "../../../navigation/RootNavigator";
+import { Stage4NavigationProps } from "../../../navigation/NavigationTypes";
+import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
 
-const Stage1 = () => {
+const Stage7 = () => {
 
     const route = useRoute<RouteProp<RootStackParamsList>>();
-    const navigation = useNavigation<Stage1NavigationProps>();
+    const navigation = useNavigation<Stage4NavigationProps>();
 
     const dice1RotateAnimation = useRef(new Animated.Value(0)).current;
     const dice2RotateAnimation = useRef(new Animated.Value(0)).current;
@@ -28,7 +27,7 @@ const Stage1 = () => {
     const [ dice1IsRotating, setDice1IsRotating ] = useState<boolean>(false);
     const [ dice2IsRotating, setDice2IsRotating ] = useState<boolean>(false);
 
-    const [ boxes, setBoxes ] = useState<initialValuesType[]>(StageOneInitialValues);
+    const [ boxes, setBoxes ] = useState<initialValuesType[]>(StageSixInitialValues);
 
     const [ player1Soldiers, setPlayer1Soldiers ] = useState<number>(3);
     const [ player2Soldiers, setPlayer2Soldiers ] = useState<number>(3);
@@ -60,7 +59,6 @@ const Stage1 = () => {
             const {newTempBoxes, gameFinished} = checkPositions(tempBoxes, 'Player1');
             setPlayer1DiceNumber(diceNumber);
             console.log('Positions = '+JSON.stringify(newTempBoxes));
-            console.log('Game finished: '+ gameFinished)
             setBoxes(newTempBoxes);
             if (gameFinished) {
                 setShowGameFinishedPopup(true);
@@ -84,7 +82,7 @@ const Stage1 = () => {
                 return;
             }
             // if game is not finished
-            if (route.params?.Player == 'Single Player' && !gameFinished) {
+            if (!gameFinished) {
                 rollPlayer1Dice();
             }
             setTurn('Player1');
@@ -95,125 +93,71 @@ const Stage1 = () => {
         tempBoxes: initialValuesType[], 
         playerTurn: 'Player1' | 'Player2'
     ) : {newTempBoxes: initialValuesType[], gameFinished?: boolean} => {
-        
         setDice1IsRotating(false);
         setDice2IsRotating(false);
-        let player1Position = -1;
+        let player1Position = 0;
         tempBoxes.some(box => {
             if(box.value == 1) {
                 player1Position = tempBoxes.indexOf(box);
             }
         });
-        let player2Position = -1;
+        let player2Position = 15;
         tempBoxes.some(box => {
             if(box.value == 2) {
                 player2Position = tempBoxes.indexOf(box);
             }
         });
 
-        console.log('P1S : '+player1Soldiers);
-        console.log('P2S : '+player2Soldiers);
-        const { 
-            newTempBoxes1, 
-            stepped, 
-            finished1, 
-            result1, 
-            player1Soldiers1, 
-            player2Soldiers1 
-        } = hasSteppedOnTheEnemy(
-            tempBoxes, 
-            playerTurn, 
-            player1Position, 
-            player2Position,
-            player1Soldiers,
-            player2Soldiers,
-            result
-        );
+        if (playerTurn == 'Player1' && player1Position >= 7) {
+            updatePositions(tempBoxes, player1Position, player2Position);
+            setResult([result[0] + 1, result[1]]);
 
-        if (stepped) {
-            console.log(result1);
-            if (player1Soldiers1 && player2Soldiers1) {
-                setPlayer1Soldiers(player1Soldiers1);
-                setPlayer2Soldiers(player2Soldiers1);
-                if (result1) {
-                    setResult(result1);
+            if (result[0] == 1) {
+                return {
+                    newTempBoxes: tempBoxes,
+                    gameFinished: true
                 }
             }
+        } else if (playerTurn == 'Player2' && player2Position <= 7) {
+            updatePositions(tempBoxes, player1Position, player2Position);
+            setResult([result[0], result[1] + 1]);
 
-            return {
-                newTempBoxes: newTempBoxes1,
-                gameFinished: finished1
-            };
-        }
-
-        const { 
-            newTempBoxes2, 
-            passedOver, 
-            finished2, 
-            result2, 
-            player1Soldiers2, 
-            player2Soldiers2
-        } = hasPassedOverTheEnemy(
-            tempBoxes, 
-            playerTurn, 
-            player1Position, 
-            player2Position,
-            result,
-            player1Soldiers,
-            player2Soldiers
-        );
-
-        if (passedOver) {
-            if (player1Soldiers2 && player2Soldiers2) {
-                setPlayer1Soldiers(player1Soldiers2);
-                setPlayer2Soldiers(player2Soldiers2);
-                if (result2) {
-                    setResult(result2);
+            if (result[1] == 1) {
+                return {
+                    newTempBoxes: tempBoxes,
+                    gameFinished: true
                 }
             }
-
-            return {
-                newTempBoxes: newTempBoxes2,
-                gameFinished: finished2
-            };
-        }
-        
-        const { 
-            newTempBoxes3, 
-            finished3, 
-            result3 
-        } = hasReachedTheEnemyBase(
-            tempBoxes, 
-            playerTurn, 
-            player1Position, 
-            player2Position,
-            result
-        );
-        if (finished3) {
-
-            if (result3) {
-                setResult(result3);
-            }
-
-            return {
-                newTempBoxes: newTempBoxes3, 
-                gameFinished: true
-            };
         }
 
         return {newTempBoxes: tempBoxes};
+    }
+
+    const updatePositions = (
+        tempBoxes: initialValuesType[], 
+        player1Position: number, 
+        player2Position: number
+    ): void => {
+        setPlayer1Soldiers(player1Soldiers - 1);
+        setPlayer2Soldiers(player2Soldiers - 1);
+
+        tempBoxes[player1Position].value = 0;
+        tempBoxes[player2Position].value = 0;
+
+        tempBoxes[0].value = 1;
+        tempBoxes[14].value = 2;
     }
 
     const resetGame = () => {
         setShowGameFinishedPopup(false);
         setPlayer1Soldiers(3);
         setPlayer2Soldiers(3);
-        StageOneInitialValues.forEach(box => {
+        StageSixInitialValues.forEach(box => {
             box.value = 0
         });
-        StageOneInitialValues[0].value = 1;
-        StageOneInitialValues[StageOneInitialValues.length-1].value = 2;
-        setBoxes(StageOneInitialValues);
+        StageSixInitialValues[0].value = 1;
+        StageSixInitialValues[StageSixInitialValues.length-1].value = 2;
+        setBoxes(StageSixInitialValues);
         setTurn('Player2');
     }
 
@@ -224,55 +168,51 @@ const Stage1 = () => {
 
     return (
         <View style={styles.screen}>
-            <StatusBar backgroundColor={'green'} />
+            <StatusBar backgroundColor={Colors.BLACK} />
             <View style={styles.buttonDiceContainer} >
-                {route.params?.Player == 'Single Player' ? null
-                :
-                <RollButton 
-                    disabled={turn == 'Player2' || dice1IsRotating}
-                    backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}
                     diceNumber={player1DiceNumber} />
             </View>
-            <SoldiersContainer 
-                left={SCREEN.width/2}
+            <SoldiersContainer
+                left={0}
                 soldiers={player1Soldiers}
                 player={'Player1'} />
-
 
             <View 
                 style={styles.stageContainer} >
                 <Image
                     style={styles.stageBackgroundImage}
-                    source={require('../../../assets/images/bg_sea.png')} />
+                    source={require('../../../assets/images/bg_champion.png')} />
                     {boxes.map(box => 
                         <ImageBackground 
                             key={Math.random()}
-                            source={require('../../../assets/images/bridgeRoad.png')}
+                            source={parseInt(box.id, 10) == 8 ?
+                                require('../../../assets/images/trophy.png') :
+                                require('../../../assets/images/finger.png')}
                             style={{ 
                                 width: SCREEN.width/20, 
-                                height: SCREEN.width/20 }} >
+                                height: SCREEN.width/20,
+                                margin: 3,
+                                left: boxLeftPosition(parseInt(box.id, 10)),
+                                top: boxTopPosition(parseInt(box.id, 10))} } >
                             <Box 
                                 box={box}
-                                color={box.value == 1 ? Colors.RED : box.value == 2 ? Colors.DARK_BLUE : 'maroon'}
-                                left={0}
-                                top={0} />
+                                color={box.value == 1 ? 'green' : box.value == 2 ? 'blue' : 'maroon'}
+                                left={boxLeftPosition(parseInt(box.id, 10))}
+                                top={boxTopPosition(parseInt(box.id, 10))} />
                         </ImageBackground>
                     )}
-                {route.params?.Player == 'Single Player' ? null
-                :
                 <View style={styles.resultContainer}>
                     <Text style={[styles.resultText, {color: Colors.RED}]}>{result[0]}</Text>
                     <Text style={[styles.resultText, {color: Colors.WHITE}]}> : </Text>
-                    <Text style={[styles.resultText, {color: Colors.DARK_BLUE}]}>{result[1]}</Text>
-                </View>}
+                    <Text style={[styles.resultText, {color: Colors.BLUE}]}>{result[1]}</Text>
+                </View>
             </View>
 
-            <SoldiersContainer
-                left={SCREEN.width/2}
+            <SoldiersContainer 
+                left={SCREEN.width - 40}
                 soldiers={player2Soldiers}
                 player={'Player2'} />
             <View style={styles.buttonDiceContainer} >
@@ -282,7 +222,7 @@ const Stage1 = () => {
                     diceNumber={player2DiceNumber} />
                 <RollButton 
                     disabled={turn == 'Player1' || dice2IsRotating}
-                    backgroundColor={turn == 'Player2' ? Colors.DARK_BLUE : Colors.GRAY_A}
+                    backgroundColor={turn == 'Player2' ? Colors.BLUE : Colors.GRAY_A}
                     onPress={rollPlayer2Dice} />
             </View>
 
@@ -298,18 +238,15 @@ const Stage1 = () => {
                         } else {
                             navigation.goBack();
                         }
-                    } else if(action == 'Play') {
-                        if (route.params?.Player == 'Single Player') {
-                            navigation.replace('Stage2', {Player: 'Single Player'});
-                        }
                     } else if (action == 'Restart'){
                         navigation.replace('Stage1', {Player: 'Single Player'});
                     } else {
                         navigation.replace('HomeScreen');
                     }
-                }} />
+                }}
+                lastStage={true} />
         </View>
-    )
+    );
 }
 
-export default Stage1;
+export default Stage7;

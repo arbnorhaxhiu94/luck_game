@@ -5,7 +5,7 @@ export interface StagesType {
     id: string,
     name: string,
     image: any,
-    navigateTo: 'Stage1' | 'Stage2' | 'Stage3' | 'Stage4' | 'Stage5',
+    navigateTo: 'Stage1' | 'Stage2' | 'Stage3' | 'Stage4' | 'Stage5' | 'Stage6' | 'Stage7',
     color: ColorValue
 }
 
@@ -44,5 +44,19 @@ export const Stages: StagesType[] =  [
         image: require('../../../assets/images/bg_stage5.png'),
         navigateTo: 'Stage5',
         color: Colors.DARK_BLUE_EXTREME
-    }
+    },
+    {
+        id: '6',
+        name: 'Stage 6',
+        image: require('../../../assets/images/bg_stage6.png'),
+        navigateTo: 'Stage6',
+        color: Colors.DARK_BLUE_EXTREME
+    },
+    // {
+    //     id: '7',
+    //     name: 'Stage 7',
+    //     image: require('../../../assets/images/bg_stage6.png'),
+    //     navigateTo: 'Stage7',
+    //     color: Colors.DARK_BLUE_EXTREME
+    // }
 ];

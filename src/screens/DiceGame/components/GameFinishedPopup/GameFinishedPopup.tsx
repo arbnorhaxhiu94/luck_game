@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, View } from "react-native";
+import { Image, Modal, View } from "react-native";
 import { Colors } from "../../../../assets/colors/colors";
 import Button from "../../../../components/Button";
 import Text from "../../../../components/Text";
@@ -9,14 +9,16 @@ interface GameFinishedPopupProps {
     visible: boolean,
     mode: 'Single Player' | 'Two Players' | undefined,
     winner: 'Player1' | 'Player2',
-    onPress(action: 'Quit' | 'Play' | 'Restart'): void
+    onPress(action: 'Quit' | 'Play' | 'Restart'): void,
+    lastStage?: boolean
 }
 
 const GameFinishedPopup = ({
     visible,
     mode,
     winner,
-    onPress
+    onPress,
+    lastStage
 }: GameFinishedPopupProps) => {
     return (
         <Modal 
@@ -25,6 +27,48 @@ const GameFinishedPopup = ({
             onRequestClose={() => {return}}
             style={{flex: 1}} >
             <View style={styles.screen}>
+                {lastStage ? 
+                <View style={styles.container}>
+
+                    {winner == 'Player2' &&
+                    <Image 
+                        source={require('../../../../assets/images/trophy.png')}
+                        style={styles.trophy} />}
+
+                    {/* Message */}
+                    <Text 
+                        text={winner == 'Player1' ? 'You lost' : 'Congratulations'}
+                        color={Colors.DARK_BLUE}
+                        textAlign={'center'}
+                        fontSize={20}
+                        fontWeight={'bold'} />
+                    <View style={{height: 20}} />
+
+                    {winner == 'Player1' ?
+                    <View style={styles.buttonsContainer}>
+                        <Button 
+                            text={'Quit'}
+                            backgroundColor={Colors.ORANGE}
+                            onPress={() => onPress('Quit')}
+                            width={'50%'}
+                            borderRadius={[0, 0, 0, 0]} />
+                        <View style={{width: 1}}/>
+                        <Button 
+                            text={'Restart'}
+                            backgroundColor={Colors.BLUE}
+                            onPress={() => onPress('Restart')}
+                            width={'50%'}
+                            borderRadius={[0, 0, 0, 0]}  />
+                    </View> 
+                    :
+                    <Button 
+                        text={'GREAT'}
+                        backgroundColor={Colors.BLUE}
+                        onPress={() => onPress('Quit')}
+                        width={'100%'}
+                        borderRadius={[0, 0, 0, 0]}  />}
+                </View>
+                :
                 <View style={styles.container}>
 
                     {/* Message */}
@@ -34,8 +78,7 @@ const GameFinishedPopup = ({
                         color={Colors.DARK_BLUE}
                         textAlign={'center'}
                         fontSize={20}
-                        fontWeight={'bold'}
-                         />
+                        fontWeight={'bold'} />
                     : mode == 'Two Players' ?
                     <Text 
                         text={winner == 'Player1' ? 'Player 1 won' : 'Player 2 won'}
@@ -88,7 +131,7 @@ const GameFinishedPopup = ({
                             borderRadius={[0, 0, 0, 0]}  />
                     </View>
                     : null}
-                </View>
+                </View>}
             </View>
         </Modal>
     )

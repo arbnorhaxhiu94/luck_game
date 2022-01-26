@@ -38,6 +38,8 @@ export const hasSteppedOnTheEnemy = (
         };
     }
     if (playerTurn == 'Player1' && player2Position == -1) {
+        console.log('P2S = '+player2Soldiers);
+        console.log('P1S = '+player1Soldiers);
         player2Soldiers = player2Soldiers - 1;
         if (player2Soldiers == 0) {
             result = [result[0] + 1, result[1]];
@@ -51,6 +53,8 @@ export const hasSteppedOnTheEnemy = (
             };
         }
         tempBoxes[tempBoxes.length - 1].value = 2;
+        console.log('P2S = '+player2Soldiers);
+        console.log('P1S = '+player1Soldiers);
         return {
             newTempBoxes1: tempBoxes, 
             stepped: true,
@@ -103,8 +107,6 @@ export const hasPassedOverTheEnemy = (
         };
     }
     if (playerTurn == 'Player2' && (player2Position <= player1Position)) {
-        console.log('Player 1 down')
-        console.log('Player 1 Soldiers: '+player1Soldiers);
         tempBoxes[player1Position].value = 0;
         player1Soldiers = player1Soldiers - 1;
         if (player1Soldiers == 0) {
