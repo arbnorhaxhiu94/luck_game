@@ -9,6 +9,7 @@ import EditUsernamePopup from "./components/EditUsernamePopup/EditUsernamePopup"
 import LeaderItem from "./components/LeaderItem/LeaderItem";
 import { leaders } from "./mockData";
 import { styles } from "./styles";
+import firestore from '@react-native-firebase/firestore';
 
 const LeadersboardScreen = () => {
 
@@ -23,14 +24,32 @@ const LeadersboardScreen = () => {
     const [ leadersState, setLeadersState ] = useState<Leaders[] | null>(null);
     const [ showEditPopup, setShowEditPopup ] = useState<boolean>(false);
 
-    useEffect(() => {
-        leaders.sort((a, b) => {
-            if (typeof(b.wins) == 'number' && typeof(a.wins) == 'number') {
-                return b.wins - a.wins
-            }
-            return 0;
-        });
+    const getLeaders = async() => {
+        let leaders: Leaders[] = [];
+
+        await firestore()
+            .collection('Leaders')
+            .orderBy('wins', 'desc')
+            .get()
+            .then(querySnapshot => {
+                console.log('Total users: ', querySnapshot.size);
+            
+                querySnapshot.forEach(documentSnapshot => {
+                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+                    console.log(typeof(documentSnapshot.data().id))
+                    let leader: Leaders = {
+                        id: documentSnapshot.data()?.id,
+                        username: documentSnapshot.data()?.username,
+                        wins: documentSnapshot.data()?.wins
+                    }
+                    leaders.push(leader);
+                });
+            });
         setLeadersState(leaders);
+    }
+
+    useEffect(() => {
+        getLeaders();
     }, []);
 
     return (
