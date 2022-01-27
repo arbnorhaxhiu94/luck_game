@@ -19,5 +19,6 @@ export enum Colors {
     ORANGE = '#ffa100',
     ORANGE_LIGHT = '#ffbf00',
 
+    TRANSPARENT = 'transparent',
     TRANSPARENT_SHADOW = 'rgba(0, 0, 0, 0.3)'
 }

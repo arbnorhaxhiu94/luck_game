@@ -45,9 +45,7 @@ const HomeScreen = () => {
                 <View style={{height: 60}} />
                 <Button 
                     text={'Leadersboard'}
-                    onPress={() => navigation.navigate('SelectStageScreen', {
-                        Player: 'Two Players'
-                    })}
+                    onPress={() => navigation.navigate('LeadersboardScreen')}
                     backgroundColor={Colors.ORANGE} />
             </View>
             <View style={[styles.container, {paddingBottom: 40, flex: 1}]}>

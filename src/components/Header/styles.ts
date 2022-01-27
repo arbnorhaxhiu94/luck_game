@@ -12,5 +12,10 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         left: 10,
         top: 10
+    },
+    editButton: {
+        position: 'absolute',
+        right: 10,
+        top: 10
     }
 });

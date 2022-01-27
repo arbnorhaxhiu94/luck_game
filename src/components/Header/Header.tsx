@@ -7,12 +7,14 @@ interface HeaderProps {
     title: string | undefined,
     titleTextColor?: ColorValue,
     goBack?(): void,
+    edit?(): void
 }
 
 const Header = ({
     title,
     titleTextColor,
-    goBack
+    goBack,
+    edit
 }: HeaderProps) => {
     return (
         <View style={styles.container}>
@@ -29,8 +31,17 @@ const Header = ({
             <Text 
                 text={title}
                 color={titleTextColor}
-                fontSize={18}
+                fontSize={20}
                 fontWeight={'bold'} />
+
+            {edit ? 
+            <TouchableOpacity 
+                style={styles.editButton}
+                onPress={edit} >
+                <Image 
+                    source={require('../../assets/images/ic_edit.png')}
+                    style={{width: 40, height: 40}} />
+            </TouchableOpacity> : null}
         </View>
     )
 }

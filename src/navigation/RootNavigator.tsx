@@ -10,12 +10,14 @@ import Stage4 from "../screens/DiceGame/Stage4/Stage4";
 import Stage5 from "../screens/DiceGame/Stage5/Stage5";
 import Stage6 from "../screens/DiceGame/Stage6/Stage6";
 import Stage7 from "../screens/DiceGame/Stage7/Stage7";
+import LeadersboardScreen from "../screens/LeadersboardScreen";
 
 export type RootStackParamsList = {
     HomeScreen: undefined,
     SelectStageScreen: {
         Player: 'Single Player' | 'Two Players'
     },
+    LeadersboardScreen: undefined,
     Stage1: {
         Player: 'Single Player' | 'Two Players' | undefined
     },
@@ -50,6 +52,7 @@ export const RootNavigator = () => {
             }}>
                 <RootStack.Screen name={'HomeScreen'} component={HomeScreen} />
                 <RootStack.Screen name={'SelectStageScreen'} component={SelectStageScreen} />
+                <RootStack.Screen name={'LeadersboardScreen'} component={LeadersboardScreen} />
                 <RootStack.Screen name={'Stage1'} component={Stage1} />
                 <RootStack.Screen name={'Stage2'} component={Stage2} />
                 <RootStack.Screen name={'Stage3'} component={Stage3} />
