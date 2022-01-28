@@ -1,0 +1,5 @@
+export enum UserActionTypes {
+    SET_USER_REQUEST = 'SET_USER_REQUEST',
+    SET_USER_SUCCESS = 'SET_USER_SUCCESS',
+    SET_USER_ERROR = 'SET_USER_ERROR'
+}

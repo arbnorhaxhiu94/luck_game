@@ -2,18 +2,29 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, StatusBar, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
 import { Colors } from "../../assets/colors/colors";
 import Header from "../../components/Header";
+import Text from "../../components/Text";
 import { Leaders } from "../../models/Leaders";
+import { actionCreators, State } from "../../redux";
+import { GetLeadersStateType } from "../../redux/reducers/GetLeaders/GetLeadersReducer";
+import { UserStateType } from "../../redux/reducers/User/UserReducer";
+import LoadingView from "../LoadingView";
 import EditUsernamePopup from "./components/EditUsernamePopup/EditUsernamePopup";
 import LeaderItem from "./components/LeaderItem/LeaderItem";
-import { leaders } from "./mockData";
 import { styles } from "./styles";
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 
 const LeadersboardScreen = () => {
 
     const navigation = useNavigation();
+
+    const dispatch = useDispatch();
+    const { getLeaders } = bindActionCreators(actionCreators, dispatch);
+
+    const leadersState: GetLeadersStateType = useSelector((state: State) => state.getLeadersReducer);
 
     const leadersboardHeader: Leaders = {
         id: 'Position',
@@ -21,32 +32,7 @@ const LeadersboardScreen = () => {
         wins: 'Wins'
     }
 
-    const [ leadersState, setLeadersState ] = useState<Leaders[] | null>(null);
     const [ showEditPopup, setShowEditPopup ] = useState<boolean>(false);
-
-    const getLeaders = async() => {
-        let leaders: Leaders[] = [];
-
-        await firestore()
-            .collection('Leaders')
-            .orderBy('wins', 'desc')
-            .get()
-            .then(querySnapshot => {
-                console.log('Total users: ', querySnapshot.size);
-            
-                querySnapshot.forEach(documentSnapshot => {
-                    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-                    console.log(typeof(documentSnapshot.data().id))
-                    let leader: Leaders = {
-                        id: documentSnapshot.data()?.id,
-                        username: documentSnapshot.data()?.username,
-                        wins: documentSnapshot.data()?.wins
-                    }
-                    leaders.push(leader);
-                });
-            });
-        setLeadersState(leaders);
-    }
 
     useEffect(() => {
         getLeaders();
@@ -67,10 +53,21 @@ const LeadersboardScreen = () => {
                 leader={leadersboardHeader}
                 place={'#'}
                 backgroundColor={Colors.ORANGE_LIGHT} />
-            {leadersState &&
+            {leadersState.loading ?
+            <LoadingView 
+                color={Colors.WHITE}
+                text={'Loading...'} />
+            :
+            leadersState.error ? 
+            <Text 
+                text={leadersState.error}
+                textAlign={'center'}
+                color={Colors.ORANGE}
+                fontSize={14} />
+            : leadersState.data &&
             <FlatList 
                 bounces={false}
-                data={leadersState}
+                data={leadersState.data}
                 renderItem={({item, index}) => {
                     return (
                         <LeaderItem 
