@@ -4,7 +4,6 @@ import { Alert, Animated, BackHandler, Easing, Image, ImageBackground, StatusBar
 import { Colors } from "../../../assets/colors/colors";
 import Header from "../../../components/Header";
 import { SCREEN } from "../../../config/Constants";
-import { StageTwoInitialValues } from "../calculations/initialValues/StageTwoInitialValues";
 import { initialValuesType } from "../calculations/initialValues/type";
 import { Box } from "../components/Box/Box";
 import { Dice } from "../components/Dice/Dice";
@@ -21,6 +20,7 @@ import { UserStateType } from "../../../redux/reducers/User/UserReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators, State } from "../../../redux";
 import { bindActionCreators } from "redux";
+import { StageTwoInitialValues } from "../calculations/initialValues/StageTwoInitialValues";
 
 const Stage2 = () => {
 
@@ -294,16 +294,16 @@ const Stage2 = () => {
                 {route.params?.Player == 'Single Player' ? null
                 :
                 <RollButton 
-                disabled={turn == 'Player2' || dice1IsRotating}
+                    disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}
                     diceNumber={player1DiceNumber} />
             </View>
             <SoldiersContainer
-                left={SCREEN.width/4}
+                left={0}
                 soldiers={player1Soldiers}
                 player={'Player1'} />
 
@@ -311,14 +311,15 @@ const Stage2 = () => {
                 style={styles.stageContainer} >
                 <Image
                     style={styles.stageBackgroundImage}
-                    source={require('../../../assets/images/bg_firepit.png')} />
+                    source={require('../../../assets/images/bg_mars.png')} />
                     {boxes.map(box => 
                         <ImageBackground 
                             key={Math.random()}
-                            source={require('../../../assets/images/floor.png')}
+                            source={require('../../../assets/images/mars-rover.png')}
                             style={{ 
                                 width: SCREEN.width/20, 
                                 height: SCREEN.width/20,
+                                margin: 3,
                                 left: boxLeftPosition(parseInt(box.id, 10)),
                                 top: boxTopPosition(parseInt(box.id, 10))} } >
                             <Box 
@@ -338,7 +339,7 @@ const Stage2 = () => {
             </View>
 
             <SoldiersContainer
-                left={SCREEN.width / 4 + 2*SCREEN.width / 5}
+                left={SCREEN.width - 40}
                 soldiers={player2Soldiers}
                 player={'Player2'} />
             <View style={styles.buttonDiceContainer} >

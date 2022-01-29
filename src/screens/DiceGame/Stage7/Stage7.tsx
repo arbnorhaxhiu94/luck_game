@@ -14,11 +14,11 @@ import { styles } from "./styles";
 import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup";
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { Stage4NavigationProps } from "../../../navigation/NavigationTypes";
-import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
+import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
 
 const Stage7 = () => {
 

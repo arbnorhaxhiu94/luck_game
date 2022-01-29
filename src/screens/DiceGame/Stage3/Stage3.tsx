@@ -11,7 +11,6 @@ import { SoldiersContainer } from "../components/SoldiersContainer/SoldiersConta
 import { boxLeftPosition, boxTopPosition } from "./config/setBoxesPosition";
 import { calculateUser1Step, calculateUser2Step } from "../calculations/stepCalculation";
 import { styles } from "./styles";
-import { StageThreeInitialValues } from "../calculations/initialValues/StageThreeInitialValues";
 import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup";
 import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
@@ -20,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
+import { StageThreeInitialValues } from "../calculations/initialValues/StageThreeInitialValues";
 
 const Stage3 = () => {
 
@@ -294,7 +294,7 @@ const Stage3 = () => {
                 <RollButton 
                     disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}
@@ -309,11 +309,11 @@ const Stage3 = () => {
                 style={styles.stageContainer} >
                 <Image
                     style={styles.stageBackgroundImage}
-                    source={require('../../../assets/images/bg_space.png')} />
+                    source={require('../../../assets/images/bg_sky.png')} />
                     {boxes.map(box => 
                         <ImageBackground 
                             key={Math.random()}
-                            source={require('../../../assets/images/planet.png')}
+                            source={require('../../../assets/images/rain.png')}
                             style={{ 
                                 width: SCREEN.width/20, 
                                 height: SCREEN.width/20,
@@ -335,7 +335,7 @@ const Stage3 = () => {
             </View>
 
             <SoldiersContainer
-                left={SCREEN.width/8}
+                left={SCREEN.width - SCREEN.width*1/3}
                 soldiers={player2Soldiers}
                 player={'Player2'} />
             <View style={styles.buttonDiceContainer} >

@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     screen: {
         flex: 1, 
         justifyContent: 'space-between',
-        backgroundColor: Colors.BLUE
+        backgroundColor: Colors.ORANGE
     },
     buttonDiceContainer: {
         flex: 1,
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: 'lightblue',
         overflow: 'hidden',
-        paddingLeft: SCREEN.width / 8
+        paddingLeft: SCREEN.width / 4
     },
     resultContainer: {
         position: 'absolute',

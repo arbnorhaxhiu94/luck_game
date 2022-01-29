@@ -295,7 +295,7 @@ const Stage4 = () => {
                 <RollButton 
                     disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}

@@ -63,6 +63,47 @@ export const StageFiveInitialValues: initialValuesType[] = [
     },
     {
         id: '16',
+        value: 0
+    },
+    {
+        id: '17',
+        value: 0
+    },
+    {
+        id: '18',
+        value: 0
+    },
+    {
+        id: '19',
+        value: 0
+    },
+    {
+        id: '20',
+        value: 0
+    },
+    {
+        id: '21',
+        value: 0
+    },{
+        id: '22',
+        value: 0
+    },{
+        id: '23',
+        value: 0
+    },{
+        id: '24',
+        value: 0
+    },{
+        id: '25',
+        value: 0
+    },{
+        id: '26',
+        value: 0
+    },{
+        id: '27',
+        value: 0
+    },{
+        id: '28',
         value: 2
     }
-];
+]

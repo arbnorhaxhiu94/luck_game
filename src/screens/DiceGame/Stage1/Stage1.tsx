@@ -9,7 +9,6 @@ import { Stage1NavigationProps } from "../../../navigation/NavigationTypes";
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
-import { Stages } from "../../SelectStageScreen/config/StagesData";
 import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
 import { StageOneInitialValues } from "../calculations/initialValues/StageOneInitialValues";
 import { initialValuesType } from "../calculations/initialValues/type";
@@ -160,9 +159,6 @@ const Stage1 = () => {
             }
         });
 
-        console.log('P1S : '+player1Soldiers);
-        console.log('P2S : '+player2Soldiers);
-
         const P1S: number = player1SoldiersValue ? player1SoldiersValue : player1Soldiers;
         const P2S: number = player2SoldiersValue ? player2SoldiersValue : player2Soldiers;
 
@@ -294,7 +290,7 @@ const Stage1 = () => {
                 <RollButton 
                     disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}

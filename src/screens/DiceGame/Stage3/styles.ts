@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     screen: {
         flex: 1, 
         justifyContent: 'space-between',
-        backgroundColor: Colors.BLACK
+        backgroundColor: Colors.BLUE
     },
     buttonDiceContainer: {
         flex: 1,

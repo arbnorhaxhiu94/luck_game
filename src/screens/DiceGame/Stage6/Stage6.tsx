@@ -15,11 +15,11 @@ import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup
 import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { Stage4NavigationProps } from "../../../navigation/NavigationTypes";
-import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
+import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
 
 const Stage6 = () => {
 
@@ -294,14 +294,14 @@ const Stage6 = () => {
                 <RollButton 
                     disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}
                     diceNumber={player1DiceNumber} />
             </View>
             <SoldiersContainer
-                left={0}
+                left={SCREEN.width/8}
                 soldiers={player1Soldiers}
                 player={'Player1'} />
 
@@ -309,11 +309,11 @@ const Stage6 = () => {
                 style={styles.stageContainer} >
                 <Image
                     style={styles.stageBackgroundImage}
-                    source={require('../../../assets/images/bg_mars.png')} />
+                    source={require('../../../assets/images/bg_space.png')} />
                     {boxes.map(box => 
                         <ImageBackground 
                             key={Math.random()}
-                            source={require('../../../assets/images/mars-rover.png')}
+                            source={require('../../../assets/images/planet.png')}
                             style={{ 
                                 width: SCREEN.width/20, 
                                 height: SCREEN.width/20,
@@ -335,7 +335,7 @@ const Stage6 = () => {
             </View>
 
             <SoldiersContainer 
-                left={SCREEN.width - 40}
+                left={SCREEN.width/8}
                 soldiers={player2Soldiers}
                 player={'Player2'} />
             <View style={styles.buttonDiceContainer} >

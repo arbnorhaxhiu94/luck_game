@@ -15,11 +15,11 @@ import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup
 import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { Stage4NavigationProps } from "../../../navigation/NavigationTypes";
-import { StageFiveInitialValues } from "../calculations/initialValues/StageFiveInitialValues";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
+import { StageFiveInitialValues } from "../calculations/initialValues/StageFiveInitialValues";
 
 const Stage5 = () => {
 
@@ -294,14 +294,14 @@ const Stage5 = () => {
                 <RollButton 
                     disabled={turn == 'Player2' || dice1IsRotating}
                     backgroundColor={turn == 'Player1' ? Colors.RED : Colors.GRAY_A}
-                    onPress={rollPlayer1Dice} />}
+                    onPress={() => rollPlayer1Dice()} />}
                 <Dice 
                     diceRotateAnimation={dice1RotateAnimation}
                     diceIsRotating={dice1IsRotating}
                     diceNumber={player1DiceNumber} />
             </View>
             <SoldiersContainer
-                left={SCREEN.width/8}
+                left={SCREEN.width/4}
                 soldiers={player1Soldiers}
                 player={'Player1'} />
 
@@ -309,15 +309,14 @@ const Stage5 = () => {
                 style={styles.stageContainer} >
                 <Image
                     style={styles.stageBackgroundImage}
-                    source={require('../../../assets/images/bg_sky.png')} />
+                    source={require('../../../assets/images/bg_firepit.png')} />
                     {boxes.map(box => 
                         <ImageBackground 
                             key={Math.random()}
-                            source={require('../../../assets/images/rain.png')}
+                            source={require('../../../assets/images/floor.png')}
                             style={{ 
                                 width: SCREEN.width/20, 
                                 height: SCREEN.width/20,
-                                margin: 3,
                                 left: boxLeftPosition(parseInt(box.id, 10)),
                                 top: boxTopPosition(parseInt(box.id, 10))} } >
                             <Box 
