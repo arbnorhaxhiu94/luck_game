@@ -15,7 +15,6 @@ import LoadingView from "../LoadingView";
 import EditUsernamePopup from "./components/EditUsernamePopup/EditUsernamePopup";
 import LeaderItem from "./components/LeaderItem/LeaderItem";
 import { styles } from "./styles";
-// import firestore from '@react-native-firebase/firestore';
 
 const LeadersboardScreen = () => {
 
@@ -25,11 +24,22 @@ const LeadersboardScreen = () => {
     const { getLeaders } = bindActionCreators(actionCreators, dispatch);
 
     const leadersState: GetLeadersStateType = useSelector((state: State) => state.getLeadersReducer);
+    const userState: UserStateType = useSelector((state: State) => state.userReducer);
 
     const leadersboardHeader: Leaders = {
         id: 'Position',
         username: 'Username',
         wins: 'Wins'
+    }
+
+    let userPosition: Leaders | null = null;
+
+    if (userState.user) {
+        userPosition = {
+            id: userState.user?.id,
+            username: userState.user?.username,
+            wins: userState.user?.wins
+        }
     }
 
     const [ showEditPopup, setShowEditPopup ] = useState<boolean>(false);
@@ -65,18 +75,33 @@ const LeadersboardScreen = () => {
                 color={Colors.ORANGE}
                 fontSize={14} />
             : leadersState.data &&
-            <FlatList 
-                bounces={false}
-                data={leadersState.data}
-                renderItem={({item, index}) => {
-                    return (
+            <>
+                <FlatList 
+                    bounces={false}
+                    data={leadersState.data}
+                    renderItem={({item, index}) => {
+                        return (
+                            <LeaderItem 
+                                leader={item}
+                                place={index} />
+                        )
+                    }}
+                    keyExtractor={item => item.id} />
+                <View>
+                    {leadersState.data.some(leader => leader.id === userState.user?.id) ?
+                        <Text 
+                            text={'Congratulations! \nYou are on the leadersboard.'}
+                            textAlign={'center'}
+                            color={Colors.WHITE} />
+                    :
                         <LeaderItem 
-                            leader={item}
-                            place={index} />
-                    )
-                }}
-                keyExtractor={item => item.id} />}
-
+                            leader={userPosition}
+                            place={'+20'}
+                            backgroundColor={Colors.GRAY_A} />}
+                    <View style={{height: 40}} />
+                </View>
+            </>}
+            
             <EditUsernamePopup 
                 visible={showEditPopup}
                 closePopup={() => setShowEditPopup(false)} />

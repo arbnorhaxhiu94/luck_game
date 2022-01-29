@@ -15,11 +15,20 @@ import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { Stage4NavigationProps } from "../../../navigation/NavigationTypes";
 import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators, State } from "../../../redux";
+import { UserStateType } from "../../../redux/reducers/User/UserReducer";
 
 const Stage7 = () => {
 
     const route = useRoute<RouteProp<RootStackParamsList>>();
     const navigation = useNavigation<Stage4NavigationProps>();
+
+    const dispatch = useDispatch();
+    const { setUserData } = bindActionCreators(actionCreators, dispatch);
+
+    const userState: UserStateType = useSelector((state: State) => state.userReducer);
 
     const dice1RotateAnimation = useRef(new Animated.Value(0)).current;
     const dice2RotateAnimation = useRef(new Animated.Value(0)).current;
@@ -79,6 +88,15 @@ const Stage7 = () => {
             console.log('Game finished: '+ gameFinished)
             if (gameFinished) {
                 setShowGameFinishedPopup(true);
+                if (route.params?.Player == 'Single Player') {
+                    if (userState.user?.wins == 6) {
+                        setUserData({
+                            id: userState.user?.id,
+                            username: userState.user.username,
+                            wins: 7
+                        });
+                    }
+                }
                 return;
             }
             // if game is not finished

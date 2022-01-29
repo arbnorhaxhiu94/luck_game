@@ -129,7 +129,7 @@ const SelectStageScreen = () => {
                 : route.params?.Player == 'Single Player' &&
                 <View>
                     <Text 
-                        text={'Test your luck by winning 7 times in a row'}
+                        text={'Test your luck by completing 7 stages'}
                         color={Colors.WHITE} />
                 </View>}
             </View>

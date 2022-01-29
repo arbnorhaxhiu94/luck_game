@@ -6,7 +6,7 @@ export const calculateUser1Step = (
     tempBoxes: initialValuesType[], 
     diceNumber: number
 } => {
-    let diceNumber = Math.floor(Math.random() * 6) + 1;
+    let diceNumber = 1;
     let tempBoxes = boxes;
     let currentPosition: number = 0;
 
@@ -33,7 +33,7 @@ export const calculateUser2Step = (
     tempBoxes: initialValuesType[], 
     diceNumber: number
 } => {
-    let diceNumber = Math.floor(Math.random() * 6) + 1;
+    let diceNumber = 6;
     let tempBoxes = boxes;
     let currentPosition = 0;
 

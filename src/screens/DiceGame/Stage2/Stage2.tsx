@@ -17,11 +17,20 @@ import GameFinishedPopup from "../components/GameFinishedPopup/GameFinishedPopup
 import { RootStackParamsList } from "../../../navigation/RootNavigator";
 import { hasPassedOverTheEnemy, hasReachedTheEnemyBase, hasSteppedOnTheEnemy } from "../calculations/checkPositions/checkPositions";
 import { Stage2NavigationProps } from "../../../navigation/NavigationTypes";
+import { UserStateType } from "../../../redux/reducers/User/UserReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators, State } from "../../../redux";
+import { bindActionCreators } from "redux";
 
 const Stage2 = () => {
 
     const route = useRoute<RouteProp<RootStackParamsList>>();
     const navigation = useNavigation<Stage2NavigationProps>();
+
+    const dispatch = useDispatch();
+    const { setUserData } = bindActionCreators(actionCreators, dispatch);
+
+    const userState: UserStateType = useSelector((state: State) => state.userReducer);
 
     const dice1RotateAnimation = useRef(new Animated.Value(0)).current;
     const dice2RotateAnimation = useRef(new Animated.Value(0)).current;
@@ -53,15 +62,28 @@ const Stage2 = () => {
         }).start();
     }
 
-    const rollPlayer1Dice = () => {
+    const rollPlayer1Dice = (p1sValue?: number, p2sValue?: number) => {
         setDice1IsRotating(true);
         rotateDice(dice1RotateAnimation)
         setTimeout(() => {
             const { diceNumber, tempBoxes } = calculateUser1Step(boxes);
-            const {newTempBoxes, gameFinished} = checkPositions(tempBoxes, 'Player1');
-            setPlayer1DiceNumber(diceNumber);
+            const { 
+                newTempBoxes, 
+                gameFinished,
+                player1SoldiersValue,
+                player2SoldiersValue 
+            } = checkPositions(tempBoxes, 'Player1', p1sValue, p2sValue);
             console.log('Positions = '+JSON.stringify(newTempBoxes));
+            console.log('Game finished: '+ gameFinished);
+
+            setPlayer1DiceNumber(diceNumber);
             setBoxes(newTempBoxes);
+
+            if (player1SoldiersValue && player2SoldiersValue) {
+                setPlayer1Soldiers(player1SoldiersValue);
+                setPlayer2Soldiers(player2SoldiersValue);
+            }
+
             if (gameFinished) {
                 setShowGameFinishedPopup(true);
                 return;
@@ -75,17 +97,38 @@ const Stage2 = () => {
         rotateDice(dice2RotateAnimation);
         setTimeout(() => {
             const { diceNumber, tempBoxes } = calculateUser2Step(boxes);
-            const {newTempBoxes, gameFinished} = checkPositions(tempBoxes, 'Player2');
+            const { 
+                newTempBoxes, 
+                gameFinished,
+                player1SoldiersValue,
+                player2SoldiersValue
+            } = checkPositions(tempBoxes, 'Player2');
+            
             setPlayer2DiceNumber(diceNumber);
             setBoxes(newTempBoxes);
+
+            if (player1SoldiersValue && player2SoldiersValue) {
+                setPlayer1Soldiers(player1SoldiersValue);
+                setPlayer2Soldiers(player2SoldiersValue);
+            }
+
             console.log('Game finished: '+ gameFinished)
             if (gameFinished) {
                 setShowGameFinishedPopup(true);
+                if (route.params?.Player == 'Single Player') {
+                    if (userState.user?.wins == 1) {
+                        setUserData({
+                            id: userState.user?.id,
+                            username: userState.user.username,
+                            wins: 2
+                        });
+                    }
+                }
                 return;
             }
             // if game is not finished
             if (route.params?.Player == 'Single Player' && !gameFinished) {
-                rollPlayer1Dice();
+                rollPlayer1Dice(player1SoldiersValue, player2SoldiersValue);
             }
             setTurn('Player1');
         }, 1000);
@@ -93,8 +136,16 @@ const Stage2 = () => {
 
     const checkPositions = (
         tempBoxes: initialValuesType[], 
-        playerTurn: 'Player1' | 'Player2'
-    ) : {newTempBoxes: initialValuesType[], gameFinished?: boolean} => {
+        playerTurn: 'Player1' | 'Player2',
+        player1SoldiersValue?: number,
+        player2SoldiersValue?: number
+    ) : {
+        newTempBoxes: initialValuesType[], 
+        gameFinished?: boolean,
+        player1SoldiersValue?: number,
+        player2SoldiersValue?: number
+    } => {
+        
         setDice1IsRotating(false);
         setDice2IsRotating(false);
         let player1Position = -1;
@@ -110,6 +161,12 @@ const Stage2 = () => {
             }
         });
 
+        console.log('P1S : '+player1Soldiers);
+        console.log('P2S : '+player2Soldiers);
+
+        const P1S: number = player1SoldiersValue ? player1SoldiersValue : player1Soldiers;
+        const P2S: number = player2SoldiersValue ? player2SoldiersValue : player2Soldiers;
+
         const { 
             newTempBoxes1, 
             stepped, 
@@ -122,19 +179,24 @@ const Stage2 = () => {
             playerTurn, 
             player1Position, 
             player2Position,
-            player1Soldiers,
-            player2Soldiers,
+            P1S,
+            P2S,
             result
         );
 
         if (stepped) {
             console.log(result1);
             if (player1Soldiers1 && player2Soldiers1) {
-                setPlayer1Soldiers(player1Soldiers1);
-                setPlayer2Soldiers(player2Soldiers1);
                 if (result1) {
                     setResult(result1);
                 }
+
+                return {
+                    newTempBoxes: newTempBoxes1,
+                    gameFinished: finished1,
+                    player1SoldiersValue: player1Soldiers1,
+                    player2SoldiersValue: player2Soldiers1
+                };
             }
 
             return {
@@ -156,18 +218,22 @@ const Stage2 = () => {
             player1Position, 
             player2Position,
             result,
-            player1Soldiers,
-            player2Soldiers
+            P1S,
+            P2S
         );
 
         if (passedOver) {
-            console.log(result2);
             if (player1Soldiers2 && player2Soldiers2) {
-                setPlayer1Soldiers(player1Soldiers2);
-                setPlayer2Soldiers(player2Soldiers2);
                 if (result2) {
                     setResult(result2);
                 }
+
+                return {
+                    newTempBoxes: newTempBoxes1,
+                    gameFinished: finished1,
+                    player1SoldiersValue: player1Soldiers2,
+                    player2SoldiersValue: player2Soldiers2
+                };
             }
 
             return {
@@ -201,6 +267,7 @@ const Stage2 = () => {
 
         return {newTempBoxes: tempBoxes};
     }
+
 
     const resetGame = () => {
         setShowGameFinishedPopup(false);
