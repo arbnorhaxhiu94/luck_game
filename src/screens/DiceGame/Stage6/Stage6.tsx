@@ -167,6 +167,29 @@ const Stage6 = () => {
         const P2S: number = player2SoldiersValue ? player2SoldiersValue : player2Soldiers;
 
         const { 
+            newTempBoxes3, 
+            finished3, 
+            result3 
+        } = hasReachedTheEnemyBase(
+            tempBoxes, 
+            playerTurn, 
+            player1Position, 
+            player2Position,
+            result
+        );
+        if (finished3) {
+
+            if (result3) {
+                setResult(result3);
+            }
+
+            return {
+                newTempBoxes: newTempBoxes3, 
+                gameFinished: true
+            };
+        }
+
+        const { 
             newTempBoxes1, 
             stepped, 
             finished1, 
@@ -240,29 +263,6 @@ const Stage6 = () => {
                 gameFinished: finished2
             };
         }
-        
-        const { 
-            newTempBoxes3, 
-            finished3, 
-            result3 
-        } = hasReachedTheEnemyBase(
-            tempBoxes, 
-            playerTurn, 
-            player1Position, 
-            player2Position,
-            result
-        );
-        if (finished3) {
-
-            if (result3) {
-                setResult(result3);
-            }
-
-            return {
-                newTempBoxes: newTempBoxes3, 
-                gameFinished: true
-            };
-        }
 
         return {newTempBoxes: tempBoxes};
     }
@@ -287,7 +287,7 @@ const Stage6 = () => {
 
     return (
         <View style={styles.screen}>
-            <StatusBar backgroundColor={Colors.BLACK} />
+            <StatusBar backgroundColor={Colors.DARK_BLUE_EXTREME} />
             <View style={styles.buttonDiceContainer} >
                 {route.params?.Player == 'Single Player' ? null
                 :
@@ -363,7 +363,9 @@ const Stage6 = () => {
                         }
                     } else if(action == 'Play') {
                         if (route.params?.Player == 'Single Player') {
-                            navigation.replace('Stage7', {Player: 'Single Player'});
+                            setTimeout(() => {
+                                navigation.replace('Stage7', {Player: 'Single Player'});
+                            }, 500);
                         }
                     } else if (action == 'Restart'){
                         navigation.replace('Stage1', {Player: 'Single Player'});

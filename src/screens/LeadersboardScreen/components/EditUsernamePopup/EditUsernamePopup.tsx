@@ -15,12 +15,10 @@ import LoadingView from "../../../LoadingView";
 import { styles } from "./styles";
 
 interface EditUsernamePopupProps {
-    visible: boolean,
     closePopup(): void
 }
 
 const EditUsernamePopup = ({
-    visible,
     closePopup
 }: EditUsernamePopupProps) => {
 
@@ -45,12 +43,19 @@ const EditUsernamePopup = ({
             }
             getLeaders();
         }
-    }, [updateUsernameState.success])
+    }, [updateUsernameState.success]);
+
+    useEffect(() => {
+        console.log(userState.user?.username);
+        if (userState.user) {
+            setUsername(userState.user.username);
+        }
+    }, []);
 
     return (
         <Modal 
             transparent
-            visible={visible}
+            visible={true}
             onRequestClose={() => {return}} >
             <TouchableWithoutFeedback 
                 onPress={closePopup}
@@ -104,6 +109,7 @@ const EditUsernamePopup = ({
                         <>
                             <TextInput 
                                 placeholder={'Type your new username...'}
+                                value={username}
                                 onChangeText={(text) => setUsername(text)} />
                             <View style={{height: 20}} />
                             <Button 

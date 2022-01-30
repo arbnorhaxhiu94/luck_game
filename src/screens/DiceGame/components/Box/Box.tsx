@@ -20,8 +20,9 @@ export const Box = ({
         <Image 
             source={require('../../../../assets/images/woman.png')}
             style={{ 
-                width: SCREEN.width/20, 
-                height: SCREEN.width/20 ,
+                width: SCREEN.width/20 + 5, 
+                height: SCREEN.width/20 + 5,
+                alignSelf: 'center'
                 // left: left,
                 // top: top
             }} />
@@ -29,8 +30,9 @@ export const Box = ({
         <Image 
             source={require('../../../../assets/images/man.png')}
             style={{ 
-                width: SCREEN.width/20, 
-                height: SCREEN.width/20 ,
+                width: SCREEN.width/20 + 5, 
+                height: SCREEN.width/20 + 5,
+                alignSelf: 'center'
                 // left: left,
                 // top: top
             }} />

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "35355985586",
+    "project_id": "luckgame-5ed8e",
+    "storage_bucket": "luckgame-5ed8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35355985586:android:fe8c7abc5232b0ddc2abab",
+        "android_client_info": {
+          "package_name": "com.arhax.luck_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35355985586-pg6c9o0pqcg5sgdch2mhdjknocjr96a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkPFR_-d1Lcyz3RhCt4EEI7WOVZNHZVkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35355985586-pg6c9o0pqcg5sgdch2mhdjknocjr96a4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "35355985586-f3edu3c7nt0pvtvvjtcifbvig4ni0ki7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arhax.luck-game"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

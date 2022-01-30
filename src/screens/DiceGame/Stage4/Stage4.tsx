@@ -167,6 +167,29 @@ const Stage4 = () => {
         const P2S: number = player2SoldiersValue ? player2SoldiersValue : player2Soldiers;
 
         const { 
+            newTempBoxes3, 
+            finished3, 
+            result3 
+        } = hasReachedTheEnemyBase(
+            tempBoxes, 
+            playerTurn, 
+            player1Position, 
+            player2Position,
+            result
+        );
+        if (finished3) {
+
+            if (result3) {
+                setResult(result3);
+            }
+
+            return {
+                newTempBoxes: newTempBoxes3, 
+                gameFinished: true
+            };
+        }
+
+        const { 
             newTempBoxes1, 
             stepped, 
             finished1, 
@@ -238,29 +261,6 @@ const Stage4 = () => {
             return {
                 newTempBoxes: newTempBoxes2,
                 gameFinished: finished2
-            };
-        }
-        
-        const { 
-            newTempBoxes3, 
-            finished3, 
-            result3 
-        } = hasReachedTheEnemyBase(
-            tempBoxes, 
-            playerTurn, 
-            player1Position, 
-            player2Position,
-            result
-        );
-        if (finished3) {
-
-            if (result3) {
-                setResult(result3);
-            }
-
-            return {
-                newTempBoxes: newTempBoxes3, 
-                gameFinished: true
             };
         }
 

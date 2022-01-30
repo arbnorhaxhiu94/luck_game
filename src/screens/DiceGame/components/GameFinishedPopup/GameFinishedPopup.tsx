@@ -37,7 +37,7 @@ const GameFinishedPopup = ({
 
                     {/* Message */}
                     <Text 
-                        text={winner == 'Player1' ? 'You lost' : 'Congratulations'}
+                        text={winner == 'Player1' ? 'Such a shame! \nBetter luck next time.' : 'This is unbelieveable. \nCongratulations!'}
                         color={Colors.DARK_BLUE}
                         textAlign={'center'}
                         fontSize={20}

@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserStateType } from "../../redux/reducers/User/UserReducer";
 import { actionCreators, State } from "../../redux";
 import { bindActionCreators } from "redux";
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const HomeScreen = () => {
 
@@ -25,14 +24,14 @@ const HomeScreen = () => {
     useEffect(() => {
         console.log(DeviceInfo.getUniqueId());
         let uniqueId = DeviceInfo.getUniqueId();
-        let username = 'user_'+uniqueId.substring(0,8);
+        let username = 'user_'+uniqueId;
         console.log(username);
 
         console.log('USER1: '+userState.user);
         if (userState.user == null) {
             setUserData({
                 id: username,
-                username: username,
+                username: username.substring(0,15),
                 wins: 0
             });
         }

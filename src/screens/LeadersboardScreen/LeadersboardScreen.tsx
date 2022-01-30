@@ -62,7 +62,9 @@ const LeadersboardScreen = () => {
             <LeaderItem 
                 leader={leadersboardHeader}
                 place={'#'}
-                backgroundColor={Colors.ORANGE_LIGHT} />
+                orientation={'Vertical'}
+                user
+                backgroundColor={[Colors.DARK_BLUE, Colors.LIGHT_BLUE]} />
             {leadersState.loading ?
             <LoadingView 
                 color={Colors.WHITE}
@@ -77,34 +79,42 @@ const LeadersboardScreen = () => {
             : leadersState.data &&
             <>
                 <FlatList 
+                    showsVerticalScrollIndicator={false}
                     bounces={false}
                     data={leadersState.data}
                     renderItem={({item, index}) => {
                         return (
                             <LeaderItem 
                                 leader={item}
-                                place={index} />
+                                place={index}
+                                user={item.id == userState.user?.id}
+                                orientation={'Vertical'}
+                                backgroundColor={item.id == userState.user?.id ? 
+                                                [Colors.ORANGE_LIGHT, Colors.RED] :
+                                                [Colors.TRANSPARENT, Colors.TRANSPARENT]} />
                         )
                     }}
                     keyExtractor={item => item.id} />
-                <View>
+                <View style={styles.footer}>
                     {leadersState.data.some(leader => leader.id === userState.user?.id) ?
                         <Text 
                             text={'Congratulations! \nYou are on the leadersboard.'}
                             textAlign={'center'}
-                            color={Colors.WHITE} />
+                            color={Colors.ORANGE_LIGHT}
+                            fontSize={16}
+                            fontWeight={'bold'} />
                     :
                         <LeaderItem 
                             leader={userPosition}
                             place={'+20'}
-                            backgroundColor={Colors.GRAY_A} />}
+                            backgroundColor={[Colors.GRAY_A, Colors.GRAY_A]} />}
                     <View style={{height: 40}} />
                 </View>
             </>}
             
-            <EditUsernamePopup 
-                visible={showEditPopup}
-                closePopup={() => setShowEditPopup(false)} />
+            {showEditPopup ? 
+                <EditUsernamePopup 
+                    closePopup={() => setShowEditPopup(false)} /> : null}
         </LinearGradient>
     )
 }

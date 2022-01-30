@@ -18,7 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, State } from "../../../redux";
 import { UserStateType } from "../../../redux/reducers/User/UserReducer";
-import { StageSixInitialValues } from "../calculations/initialValues/StageSixInitialValues";
+import { TipPopup } from "./components/TipPopup";
+import { StageTwoInitialValues } from "../calculations/initialValues/StageTwoInitialValues";
 
 const Stage7 = () => {
 
@@ -36,7 +37,7 @@ const Stage7 = () => {
     const [ dice1IsRotating, setDice1IsRotating ] = useState<boolean>(false);
     const [ dice2IsRotating, setDice2IsRotating ] = useState<boolean>(false);
 
-    const [ boxes, setBoxes ] = useState<initialValuesType[]>(StageSixInitialValues);
+    const [ boxes, setBoxes ] = useState<initialValuesType[]>(StageTwoInitialValues);
 
     const [ player1Soldiers, setPlayer1Soldiers ] = useState<number>(3);
     const [ player2Soldiers, setPlayer2Soldiers ] = useState<number>(3);
@@ -48,6 +49,7 @@ const Stage7 = () => {
 
     const [ result, setResult ] = useState<number[]>([0, 0]);
 
+    const [ showTipPopup, setShowTipPopup ] = useState<boolean>(true);
     const [ showGameFinishedPopup, setShowGameFinishedPopup ] = useState<boolean>(false);
 
     const rotateDice = (dice: Animated.Value) => {
@@ -170,17 +172,17 @@ const Stage7 = () => {
         setShowGameFinishedPopup(false);
         setPlayer1Soldiers(3);
         setPlayer2Soldiers(3);
-        StageSixInitialValues.forEach(box => {
+        StageTwoInitialValues.forEach(box => {
             box.value = 0
         });
-        StageSixInitialValues[0].value = 1;
-        StageSixInitialValues[StageSixInitialValues.length-1].value = 2;
-        setBoxes(StageSixInitialValues);
+        StageTwoInitialValues[0].value = 1;
+        StageTwoInitialValues[StageTwoInitialValues.length-1].value = 2;
+        setBoxes(StageTwoInitialValues);
         setTurn('Player2');
     }
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
         return () => backHandler.remove()
       }, []);
 
@@ -263,6 +265,10 @@ const Stage7 = () => {
                     }
                 }}
                 lastStage={true} />
+
+            <TipPopup 
+                visible={showTipPopup}
+                closePopup={() => setShowTipPopup(false)} />
         </View>
     );
 }

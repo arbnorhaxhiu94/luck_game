@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
         borderBottomColor: Colors.DARK_BLUE_EXTREME,
         fontSize: 14,
         paddingVertical: 10,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        color: Colors.BLACK
     }
 })
