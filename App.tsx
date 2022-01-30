@@ -12,19 +12,17 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { hideNavigationBar } from 'react-native-navigation-bar-color';
+import SplashScreen from 'react-native-splash-screen'
 
 const App = () => {
 
   useEffect(() => {
     hideNavigationBar();
+    SplashScreen.hide();
   }, []);
 
   return (
     <View style={{flex: 1}}>
-      {/* <WarTanks />
-      <DiceGame />
-      <Stage2 /> */}
-      {/* <HomeScreen /> */}
       <RootNavigator />
     </View>
   )
